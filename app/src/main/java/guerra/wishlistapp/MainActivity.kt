@@ -21,8 +21,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WishlistAppTheme {
-                Surface(modifier = Modifier.fillMaxSize().padding(top = 30.dp)) {
-                    HomeView()
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    Navigation()
                 }
             }
         }

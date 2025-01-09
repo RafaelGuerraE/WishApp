@@ -14,10 +14,10 @@ fun Navigation(
 ){
     NavHost(navController = navController, startDestination = "HomeScreen"){
         composable(Screen.HomeScreen.route){
-            HomeView()
+            HomeView(navController, viewModel)
         }
         composable(Screen.AddScreen.route) {
-
+            AddScreenView(id = 0L, viewModel = viewModel, navController = navController)
         }
     }
 

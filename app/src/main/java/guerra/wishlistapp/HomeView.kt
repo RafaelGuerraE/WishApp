@@ -18,18 +18,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import guerra.wishlistapp.data.Wish
 
 @Composable
-fun HomeView(){
+fun HomeView(
+    navController: NavHostController,
+    viewModel: WishViewModel
+){
     Scaffold(
         topBar = {AppBarView(title = "WishList", {})},
         floatingActionButton = {
-            FloatingActionButton( //Called FAB
-                onClick = { /* TODO Add Navigation to add screen*/},
-                modifier = Modifier.padding(all = 20.dp),
-                contentColor = Color.White,
-                backgroundColor = Color.Black
+            FloatingActionButton( //Called as FAB
+                onClick = { navController.navigate(Screen.AddScreen.route)},
+                modifier = Modifier.padding(all = 10.dp),
+                contentColor = Color.Black,
+                backgroundColor = Color.White
                 )
             {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "")
