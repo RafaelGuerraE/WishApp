@@ -29,7 +29,7 @@ fun AppBarView(
                     contentDescription = ""
                 )
             }
-        } else{null}
+        }
     }
 
     TopAppBar(title = {
@@ -37,7 +37,7 @@ fun AppBarView(
                 color = colorResource(id = R.color.white),
                 modifier = Modifier.padding(start = 4.dp).heightIn(max = 24.dp))
     },
-        elevation = 3.dp,
+        elevation = 5.dp,
         backgroundColor = colorResource(id = R.color.app_bar_color),
         navigationIcon = navigationIcon
     )
