@@ -1,6 +1,5 @@
 package guerra.wishlistapp
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,12 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material3.Scaffold
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,8 +26,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import guerra.wishlistapp.data.Wish
+import kotlinx.coroutines.launch
 
 @Composable
 fun AddScreenView(
@@ -33,7 +36,16 @@ fun AddScreenView(
     viewModel: WishViewModel,
     navController: NavHostController
 ){
+
+    val snackMessage = remember {
+        mutableStateOf("")
+    }
+
+    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
+
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = { AppBarView(title =
             if(id != 0L) stringResource(id = R.string.update_wish)
             else stringResource(id = R.string.add_wish),
@@ -73,11 +85,34 @@ fun AddScreenView(
             Button(
                 onClick = {
                     if(viewModel.wishTitleState.isNotEmpty() && viewModel.wishDescriptionState.isNotEmpty()){
-                        // TODO UpdateWish after setting DB
+
+                        if(id != 0L){
+                            viewModel.editWish(wish = Wish(
+                                title = viewModel.wishTitleState.trim(),
+                                description = viewModel.wishDescriptionState.trim()
+                            ))
+
+                            snackMessage.value = "Wish has been edited."
+                        }
+                        else{
+                            viewModel.addWish(wish = Wish(
+                                title = viewModel.wishTitleState.trim(),
+                                description = viewModel.wishDescriptionState.trim()
+                            ))
+
+                            snackMessage.value = "Wish has been created."
+                        }
+
                     }
                     else{
-                        //TODO AddWish
+                        snackMessage.value = "Enter fields to create a wish."
                     }
+
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(snackMessage.value)
+                        navController.navigateUp()
+                    }
+
             },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)){
                 Text(
