@@ -9,9 +9,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/wishapp"
+        android:icon="@mipmap/ic_wish"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/wishapp"
+        android:roundIcon="@mipmap/ic_wish_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WishlistApp"
         tools:targetApi="31">

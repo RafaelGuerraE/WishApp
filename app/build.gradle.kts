@@ -45,6 +45,9 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.30.0")
+
+
     implementation("androidx.navigation:navigation-compose:2.8.5")
 
     implementation("androidx.compose.ui:ui:1.6.0-alpha08")

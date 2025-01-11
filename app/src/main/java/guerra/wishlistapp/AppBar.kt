@@ -19,7 +19,7 @@ fun AppBarView(
     onBackNavClicked: () -> Unit = {}
 ){
     val navigationIcon: (@Composable () -> Unit) = {
-        if(!title.contains("WishList")){
+        if(!title.contains("My Wishlist")){
             IconButton(onClick = {onBackNavClicked()}) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -35,7 +35,7 @@ fun AppBarView(
                 color = colorResource(id = R.color.white),
                 modifier = Modifier.heightIn(max = 24.dp))
     },
-        backgroundColor = colorResource(id = R.color.app_bar_color),
+        backgroundColor = Color.DarkGray,
         navigationIcon = navigationIcon
     )
 }

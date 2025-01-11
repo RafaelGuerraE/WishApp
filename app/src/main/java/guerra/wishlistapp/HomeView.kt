@@ -46,7 +46,7 @@ fun HomeView(
     context: Context
 ) {
     Scaffold(
-        topBar = { AppBarView(title = "WishList", {}) },
+        topBar = { AppBarView(title = "My Wishlist", {}) },
         floatingActionButton = {
             FloatingActionButton( //Called as FAB
                 onClick =
