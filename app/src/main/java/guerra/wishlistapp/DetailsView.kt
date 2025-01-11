@@ -1,5 +1,7 @@
 package guerra.wishlistapp
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,12 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,28 +35,34 @@ import guerra.wishlistapp.data.Wish
 import kotlinx.coroutines.launch
 
 @Composable
-fun AddScreenView(
+fun DetailsView(
     id:Long,
     viewModel: WishViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    context: Context
 ){
+    val scaffoldState = rememberScaffoldState()
 
-    val snackMessage = remember {
-        mutableStateOf("")
+    if(id != 0L){
+        val wish = viewModel.getWishById(id).collectAsState(initial = Wish())
+        viewModel.wishTitleState = wish.value.title
+        viewModel.wishDescriptionState = wish.value.description
+    }
+    else{
+        viewModel.wishTitleState = ""
+        viewModel.wishDescriptionState = ""
     }
 
-    val scope = rememberCoroutineScope()
-    val scaffoldState = rememberScaffoldState()
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = { AppBarView(title =
             if(id != 0L) stringResource(id = R.string.update_wish)
-            else stringResource(id = R.string.add_wish),
-            {
-                navController.navigateUp()
-            }
-        )}
+            else stringResource(id = R.string.add_wish)
+        ) {
+            navController.navigateUp()
+        }
+        }
     ) {
         Column (
             modifier = Modifier.padding(it).wrapContentSize(),
@@ -88,37 +98,29 @@ fun AddScreenView(
 
                         if(id != 0L){
                             viewModel.editWish(wish = Wish(
+                                id = id,
                                 title = viewModel.wishTitleState.trim(),
                                 description = viewModel.wishDescriptionState.trim()
                             ))
-
-                            snackMessage.value = "Wish has been edited."
+                            Toast.makeText(context, "Wish has been edited.", Toast.LENGTH_SHORT).show()
                         }
                         else{
                             viewModel.addWish(wish = Wish(
                                 title = viewModel.wishTitleState.trim(),
                                 description = viewModel.wishDescriptionState.trim()
                             ))
-
-                            snackMessage.value = "Wish has been created."
+                            Toast.makeText(context, "Wish has been created.", Toast.LENGTH_SHORT).show()
                         }
 
-                    }
-                    else{
-                        snackMessage.value = "Enter fields to create a wish."
-                    }
-
-                    scope.launch {
-                        scaffoldState.snackbarHostState.showSnackbar(snackMessage.value)
                         navController.navigateUp()
                     }
-
             },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)){
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)){
                 Text(
                     text = if(id != 0L) stringResource(id = R.string.update_wish)
                             else stringResource(id = R.string.add_wish) ,
-                    color = Color.White,
+                    color = Color.Black,
                     fontWeight = FontWeight.ExtraBold,
                     modifier = Modifier.padding(5.dp)
                 )

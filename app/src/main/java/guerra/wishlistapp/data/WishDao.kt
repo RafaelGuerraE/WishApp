@@ -27,7 +27,7 @@ abstract class WishDao {
     @Query("SELECT * FROM `wishes`")
     abstract fun getAllWishes(): Flow<List<Wish>>
 
-    @Query("SELECT * FROM `wishes` WHERE id + :id")
+    @Query("SELECT * FROM `wishes` WHERE id = :id")
     abstract fun getWishById(id:Long): Flow<Wish>
 
 }
